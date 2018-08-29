@@ -37,4 +37,7 @@ public class Book {
             return "That book is not available.";
         }
     }
+    public String checkinBook(){
+        return "Thank you for returning the book.";
+    }
 }

@@ -24,8 +24,8 @@ public class BookTest {
     @Test
     public void shouldReturnSuccessMessageWhenCheckingOutIfBookIsAvailable(){
         Book libritoParaReservar = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
-        String successmessage = libritoParaReservar.checkoutBook();
-        assertEquals("Thank you! Enjoy the book", successmessage);
+        String successMessage = libritoParaReservar.checkoutBook();
+        assertEquals("Thank you! Enjoy the book", successMessage);
     }
     @Test
     public void shouldReturnBookStatusReservedWhenCheckingOutIfBookIsAvailable(){
@@ -38,4 +38,12 @@ public class BookTest {
     public void shouldReturnErrorMessageWhenCheckingOutIfBookIsNotAvailable(){
         assertEquals("That book is not available.", libritoPrestado.checkoutBook());
     }
+
+    @Test
+    public void shouldReturnSuccessMessageWhenCheckingIn(){
+        Book libritoParaReservar = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
+        String successMessage = libritoParaReservar.checkinBook();
+        assertEquals("Thank you for returning the book.", successMessage);
+    }
+
 }
