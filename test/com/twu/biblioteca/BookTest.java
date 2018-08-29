@@ -41,9 +41,16 @@ public class BookTest {
 
     @Test
     public void shouldReturnSuccessMessageWhenCheckingIn(){
-        Book libritoParaReservar = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
-        String successMessage = libritoParaReservar.checkinBook();
+        Book libritoParaDevolver = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.RESERVED);
+        String successMessage = libritoParaDevolver.checkinBook();
         assertEquals("Thank you for returning the book.", successMessage);
+    }
+
+    @Test
+    public void shouldReturnBookStatusAvailableWhenCheckingIn(){
+        Book libritoParaDevolver = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.RESERVED);
+        libritoParaDevolver.checkinBook();
+        assertEquals(Book.BookAvailabilityStatus.AVAILABLE, libritoParaDevolver.getBookStatus());
     }
 
 }

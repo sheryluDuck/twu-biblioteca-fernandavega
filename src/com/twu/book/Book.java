@@ -38,6 +38,7 @@ public class Book {
         }
     }
     public String checkinBook(){
+        this.setBookStatus(BookAvailabilityStatus.AVAILABLE);
         return "Thank you for returning the book.";
     }
 }
