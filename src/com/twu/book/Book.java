@@ -28,7 +28,13 @@ public class Book {
     public boolean isBookAvailable(){
         return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
     }
-    public void checkoutBook(){
-        this.setBookStatus(BookAvailabilityStatus.RESERVED);
+    //Moving this to a Library Operation Class in the future :)
+    public String checkoutBook(){
+        if(this.isBookAvailable()){
+            this.setBookStatus(BookAvailabilityStatus.RESERVED);
+            return "Thank you! Enjoy the book";
+        }else {
+            return "That book is not available.";
+        }
     }
 }
