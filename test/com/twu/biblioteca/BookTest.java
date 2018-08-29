@@ -14,4 +14,10 @@ public class BookTest {
         librito.setBookStatus(Book.BookAvailabilityStatus.AVAILABLE);
         Assert.assertTrue(librito.isBookAvailable());
     }
+    @Test
+    public void shouldReturnBookIsNotAvailableWhenStatusIsDifferentFromAvailable(){
+        Book librito = new Book();
+        librito.setBookStatus(Book.BookAvailabilityStatus.RESERVED);
+        Assert.assertFalse(librito.isBookAvailable());
+    }
 }

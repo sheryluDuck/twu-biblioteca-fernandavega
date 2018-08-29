@@ -18,6 +18,6 @@ public class Book {
     }
 
     public boolean isBookAvailable(){
-        return true;
+        return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
     }
 }
