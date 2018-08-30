@@ -13,6 +13,7 @@ public class Library {
         this.libraryBookList = libraryBookList;
     }
 
+
     public Book[] getLibraryBookList() {
         return libraryBookList;
     }
@@ -35,6 +36,17 @@ public class Library {
         if(bookPosition>-1){
             this.libraryBookList[bookPosition].setBookStatus(bookStatus);
         }
+    }
+
+    public String checkOutBook(Book book){
+
+        if(book.isBookAvailable() && isBookFromLibrary(book)){
+            updateBookStatusInLibrary(book, Book.BookAvailabilityStatus.RESERVED);
+            return "Thank you! Enjoy the book";
+        }else {
+            return "That book is not available.";
+        }
+
     }
 
 }

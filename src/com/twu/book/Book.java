@@ -1,5 +1,7 @@
 package com.twu.book;
 
+import java.util.Objects;
+
 public class Book {
     String author;
     String bookName;
@@ -10,8 +12,21 @@ public class Book {
     }
     private BookAvailabilityStatus bookStatus;
 
-    public BookAvailabilityStatus getBookStatus() {
-        return bookStatus;
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, bookName, publishYear);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Book)) {
+            return false;
+        }
+        Book book = (Book) obj;
+        return Objects.equals(author.toLowerCase(), book.author.toLowerCase())&&
+                Objects.equals(bookName.toLowerCase(), bookName.toLowerCase())&&
+                publishYear == book.publishYear;
+
     }
 
     public Book(String author, String bookName, int publishYear, BookAvailabilityStatus bookStatus) {
@@ -21,6 +36,11 @@ public class Book {
         this.bookStatus = bookStatus;
     }
 
+    public BookAvailabilityStatus getBookStatus() {
+        return bookStatus;
+    }
+
+
     public void setBookStatus(BookAvailabilityStatus bookStatus) {
         this.bookStatus = bookStatus;
     }
@@ -28,15 +48,7 @@ public class Book {
     public boolean isBookAvailable(){
         return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
     }
-    //Moving this to a Library Operation Class in the future :)
-    public String checkoutBook(){
-        if(this.isBookAvailable()){
-            this.setBookStatus(BookAvailabilityStatus.RESERVED);
-            return "Thank you! Enjoy the book";
-        }else {
-            return "That book is not available.";
-        }
-    }
+
     public String checkinBook(){
         this.setBookStatus(BookAvailabilityStatus.AVAILABLE);
         return "Thank you for returning the book.";
