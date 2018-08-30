@@ -49,8 +49,4 @@ public class Book {
         return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
     }
 
-    public String checkinBook(){
-        this.setBookStatus(BookAvailabilityStatus.AVAILABLE);
-        return "Thank you for returning the book.";
-    }
 }

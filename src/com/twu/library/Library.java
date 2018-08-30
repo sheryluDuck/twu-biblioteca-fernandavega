@@ -49,4 +49,14 @@ public class Library {
 
     }
 
+    public String checkInBook(Book book){
+        if(isBookFromLibrary(book)){
+            updateBookStatusInLibrary(book, Book.BookAvailabilityStatus.AVAILABLE);
+            return "Thank you for returning the book.";
+        }else {
+            return "That is not a valid book to return.";
+        }
+
+    }
+
 }

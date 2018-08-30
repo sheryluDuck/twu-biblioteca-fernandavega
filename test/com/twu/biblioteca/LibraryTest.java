@@ -90,4 +90,36 @@ public class LibraryTest {
         assertEquals(Book.BookAvailabilityStatus.RESERVED, cornerLibrary.getLibraryBookList()[cornerLibrary.getBookPosition(libritoQueQuiero)].getBookStatus());
 
     }
+
+    @Test
+
+    public void shouldReturnSuccessMessageWhenCheckingInIfBookIsAvailableInLibrary(){
+        Library cornerLibrary = new Library("Corner", libritosVarios);
+        Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
+
+        String receivedMessage= cornerLibrary.checkInBook(libroParaDevolver);
+
+        assertEquals("Thank you for returning the book.", receivedMessage);
+    }
+
+    @Test
+
+    public void shouldReturnErrorMessageWhenCheckingInIfBookIsNotAvailableInLibrary(){
+        Library cornerLibrary = new Library("Corner", libritosVarios);
+
+        String receivedMessage= cornerLibrary.checkInBook(libroExtraterrestre);
+
+        assertEquals("That is not a valid book to return.", receivedMessage);
+    }
+
+    @Test
+
+    public void shouldChangeBookStatusIfCheckInWasSuccessfull(){
+        Library cornerLibrary = new Library("Corner", libritosVarios);
+        Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
+
+        cornerLibrary.checkInBook(libroParaDevolver);
+
+        assertEquals(Book.BookAvailabilityStatus.AVAILABLE, cornerLibrary.getLibraryBookList()[cornerLibrary.getBookPosition(libroParaDevolver)].getBookStatus());
+    }
 }
