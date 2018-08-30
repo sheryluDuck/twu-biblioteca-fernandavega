@@ -21,7 +21,7 @@ public class Book {
         this.bookStatus = bookStatus;
     }
 
-    private void setBookStatus(BookAvailabilityStatus bookStatus) {
+    public void setBookStatus(BookAvailabilityStatus bookStatus) {
         this.bookStatus = bookStatus;
     }
 

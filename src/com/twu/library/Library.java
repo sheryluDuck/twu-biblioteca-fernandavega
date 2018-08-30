@@ -1,4 +1,4 @@
-package com.twu.com.twu.library;
+package com.twu.library;
 
 import com.twu.book.Book;
 
@@ -21,11 +21,20 @@ public class Library {
         return Arrays.asList(this.libraryBookList).contains(book);
     }
 
-    public String checkInBook(Book book){
+    //should be private(?)
+    public int getBookPosition(Book book){
         if(isBookFromLibrary(book)){
-            return book.checkinBook();
+            return Arrays.asList(this.libraryBookList).indexOf(book);
         }else{
-            return "That is not a valid book to return.";
+            return -1;
         }
     }
+
+    public void updateBookStatusInLibrary(Book book, Book.BookAvailabilityStatus bookStatus){
+        int bookPosition = getBookPosition(book);
+        if(bookPosition>-1){
+            this.libraryBookList[bookPosition].setBookStatus(bookStatus);
+        }
+    }
+
 }

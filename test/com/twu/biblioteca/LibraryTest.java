@@ -1,8 +1,10 @@
 package com.twu.biblioteca;
 
 import com.twu.book.Book;
-import com.twu.com.twu.library.Library;
+import com.twu.library.Library;
 import org.junit.Test;
+
+
 import static junit.framework.TestCase.*;
 
 public class LibraryTest {
@@ -22,16 +24,33 @@ public class LibraryTest {
     public void shouldReturnFalseIfBookIsNotPartOfLibrary(){
         assertFalse(librimundi.isBookFromLibrary(libroExtraterrestre));
     }
-    @Test
-    public void shouldReturnSuccessMessageIfBookIsPartOfLibrary(){
-        String checkInMessage = librimundi.checkInBook(libritosVarios[1]);
-        assertEquals("Thank you for returning the book.", checkInMessage);
-    }
-    @Test
-    public void shouldReturnErrorMessageIfBookIsNotPartOfLibrary(){
 
-        String checkInMessage = librimundi.checkInBook(libroExtraterrestre);
-        assertEquals("That is not a valid book to return.", checkInMessage);
+    @Test
+    public void shouldReturnPositionForBookInLibrary() {
+        int platoBookPosition = 0;
+        int receivedPosition = librimundi.getBookPosition(libritosVarios[0]);
+        assertEquals(platoBookPosition, receivedPosition);
     }
+
+    @Test
+    public void shouldReturnNegativePositionForBookNotInLibrary() {
+        int defaultErrorPosition = -1;
+        int receivedPosition = librimundi.getBookPosition(libroExtraterrestre);
+        assertEquals(defaultErrorPosition, receivedPosition);
+    }
+
+    @Test
+    public void shouldSetBookStatusReservedForBookInLibrary(){
+        Library cornerLibrary = new Library("Corner", libritosVarios);
+        cornerLibrary.updateBookStatusInLibrary(libritosVarios[0], Book.BookAvailabilityStatus.RESERVED);
+        assertEquals(Book.BookAvailabilityStatus.RESERVED, cornerLibrary.getLibraryBookList()[0].getBookStatus());
+    }
+    @Test
+    public void shouldNotChangeStatusForBookNotInLibrary(){
+        Library cornerLibrary = new Library("Corner", libritosVarios);
+        cornerLibrary.updateBookStatusInLibrary(libroExtraterrestre, Book.BookAvailabilityStatus.RESERVED);
+        assertEquals(Book.BookAvailabilityStatus.AVAILABLE, libroExtraterrestre.getBookStatus());
+    }
+
 
 }
