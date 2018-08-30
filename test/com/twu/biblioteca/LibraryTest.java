@@ -11,6 +11,7 @@ public class LibraryTest {
        new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED)
     };
     Library librimundi = new Library("Librimundi", libritosVarios);
+    Book libroExtraterrestre = new Book("F. Vega", "What happened in Rosswell?", 2098, Book.BookAvailabilityStatus.AVAILABLE);
     @Test
     public void shouldReturnTrueIfBookIsPartOfLibrary(){
         Book libroDePlaton= libritosVarios[0];
@@ -19,8 +20,18 @@ public class LibraryTest {
 
     @Test
     public void shouldReturnFalseIfBookIsNotPartOfLibrary(){
-        Book libroExtraterrestre = new Book("F. Vega", "What happened in Rosswell?", 2098, Book.BookAvailabilityStatus.AVAILABLE);
         assertFalse(librimundi.isBookFromLibrary(libroExtraterrestre));
+    }
+    @Test
+    public void shouldReturnSuccessMessageIfBookIsPartOfLibrary(){
+        String checkInMessage = librimundi.checkInBook(libritosVarios[1]);
+        assertEquals("Thank you for returning the book.", checkInMessage);
+    }
+    @Test
+    public void shouldReturnErrorMessageIfBookIsNotPartOfLibrary(){
+
+        String checkInMessage = librimundi.checkInBook(libroExtraterrestre);
+        assertEquals("That is not a valid book to return.", checkInMessage);
     }
 
 }

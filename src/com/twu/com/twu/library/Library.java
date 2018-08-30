@@ -20,4 +20,12 @@ public class Library {
     public boolean isBookFromLibrary(Book book){
         return Arrays.asList(this.libraryBookList).contains(book);
     }
+
+    public String checkInBook(Book book){
+        if(isBookFromLibrary(book)){
+            return book.checkinBook();
+        }else{
+            return "That is not a valid book to return.";
+        }
+    }
 }
