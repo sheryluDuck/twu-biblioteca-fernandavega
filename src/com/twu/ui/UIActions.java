@@ -29,8 +29,8 @@ public class UIActions {
         Book selectedBook = null;
         try{
             selectedBook= library.getLibraryBookList()[selectedBookNumber-1];
-            System.out.println("Selected Book: ");
-            System.out.println(selectedBook.toString());
+            /*System.out.println("Selected Book: ");
+            System.out.println(selectedBook.toString());*/
             return selectedBook;
         }catch (ArrayIndexOutOfBoundsException e){
             throw new InputMismatchException("There is no book with that number, sorry :( Try Again!");
