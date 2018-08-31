@@ -18,21 +18,72 @@ public class UIActions {
             System.out.format("|%-2d|%-20s|%-50s|%-5d|%n",counter, book.author, book.bookName, book.publishYear);
         }
     }
-    public int readNumberFromConsole(){
-        int selectedBookNumber = 0;
-        System.out.println("Please enter a book number: ");
+    private int readNumberFromConsole(String messageToDisplay){
+        int selectedBookNumber;
+        System.out.println(messageToDisplay);
         String inputString = scanIn.nextLine();
         selectedBookNumber= castNumberFromConsole(inputString);
         return selectedBookNumber;
     }
-    public Book selectLibraryBook(Library library, int selectedBookNumber){
-        Book selectedBook = null;
+
+    public void printSelectedBook(Library library){
         try{
-            selectedBook= library.getLibraryBookList()[selectedBookNumber-1];
-            /*System.out.println("Selected Book: ");
-            System.out.println(selectedBook.toString());*/
+            int selectedNumber= readNumberFromConsole("Please enter a book number: ");
+            Book selectedBook = selectLibraryBook(library, selectedNumber);
+            System.out.println("Selected Book: ");
+            System.out.println(selectedBook.toString());
+        }catch (InputMismatchException e){
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    private void printCheckOutBook(Library library){
+        try{
+            int selectedNumber= readNumberFromConsole("Please enter a book number: ");
+            Book selectedBook = selectLibraryBook(library, selectedNumber);
+            String checkInMessage = library.checkOutBook(selectedBook);
+            System.out.println(checkInMessage);
+        }catch (InputMismatchException e){
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    private void printCheckInBook(Library library){
+        try{
+            int selectedNumber= readNumberFromConsole("Please enter a book number: ");
+            Book selectedBook = selectLibraryBook(library, selectedNumber);
+            String checkInMessage = library.checkInBook(selectedBook);
+            System.out.println(checkInMessage);
+        }catch (InputMismatchException e){
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    public void subMenuOptionsForBooks(Library library){
+        System.out.println("Please Select an Option");
+        System.out.format("%-2d%-20s%n", 1, "CheckOut a Book");
+        System.out.format("%-2d%-20s%n", 2, "CheckIn a Book");
+        try{
+            int selectedOption = readNumberFromConsole("Please select an option: ");
+            if(selectedOption==1){
+                printCheckInBook(library);
+            }else {
+                printCheckInBook(library);
+            }
+        }catch (InputMismatchException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+
+    public Book selectLibraryBook(Library library, int selectedBookNumber){
+        try{
+            Book selectedBook= library.getLibraryBookList().get(selectedBookNumber-1);
             return selectedBook;
-        }catch (ArrayIndexOutOfBoundsException e){
+        }catch (IndexOutOfBoundsException e){
             throw new InputMismatchException("There is no book with that number, sorry :( Try Again!");
         }
 

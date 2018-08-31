@@ -2,102 +2,130 @@ package com.twu.biblioteca;
 
 import com.twu.book.Book;
 import com.twu.library.Library;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.*;
 
 public class LibraryTest {
-    Book[] libritosVarios= {
-       new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE),
-       new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED),
-       new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE)
-    };
-    Library librimundi = new Library("Librimundi", libritosVarios);
-    Book libroExtraterrestre = new Book("F. Vega", "What happened in Rosswell?", 2098, Book.BookAvailabilityStatus.AVAILABLE);
+    List<Book> libritosVarios = new ArrayList<>();
+    Library librimundi;
+    Book libroExtraterrestre;
+    Book libroDePlaton;
+
+    @Before
+    public void setUp(){
+        libritosVarios.removeAll(libritosVarios);
+        libritosVarios.add(new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE));
+        libritosVarios.add(new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED));
+        libritosVarios.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+
+        librimundi = new Library("Librimundi", libritosVarios);
+
+        libroExtraterrestre = new Book("F. Vega", "What happened in Rosswell?", 2098, Book.BookAvailabilityStatus.AVAILABLE);
+        libroDePlaton = libritosVarios.get(0);
+    }
+
     @Test
     public void shouldReturnTrueIfBookIsPartOfLibrary(){
-        Book libroDePlaton= new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE);
+        setUp();
+
         assertTrue(librimundi.isBookFromLibrary(libroDePlaton));
     }
 
     @Test
     public void shouldReturnFalseIfBookIsNotPartOfLibrary(){
+        setUp();
+
         assertFalse(librimundi.isBookFromLibrary(libroExtraterrestre));
     }
 
     @Test
     public void shouldReturnPositionForBookInLibrary() {
+        setUp();
         int platoBookPosition = 0;
-        Book platoBook = new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE);
-        int receivedPosition = librimundi.getBookPosition(platoBook);
+
+        int receivedPosition = librimundi.getBookPosition(libroDePlaton);
+
         assertEquals(platoBookPosition, receivedPosition);
     }
 
     @Test
     public void shouldReturnNegativePositionForBookNotInLibrary() {
+        setUp();
         int defaultErrorPosition = -1;
+
         int receivedPosition = librimundi.getBookPosition(libroExtraterrestre);
+
         assertEquals(defaultErrorPosition, receivedPosition);
     }
 
     @Test
     public void shouldSetBookStatusReservedForBookInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
-        cornerLibrary.updateBookStatusInLibrary(libritosVarios[0], Book.BookAvailabilityStatus.RESERVED);
-        assertEquals(Book.BookAvailabilityStatus.RESERVED, cornerLibrary.getLibraryBookList()[0].getBookStatus());
+        setUp();
+
+        librimundi.updateBookStatusInLibrary(libroDePlaton, Book.BookAvailabilityStatus.RESERVED);
+
+        assertEquals(Book.BookAvailabilityStatus.RESERVED, librimundi.getLibraryBookList().get(0).getBookStatus());
     }
     @Test
     public void shouldNotChangeStatusForBookNotInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
-        cornerLibrary.updateBookStatusInLibrary(libroExtraterrestre, Book.BookAvailabilityStatus.RESERVED);
+        setUp();
+        librimundi.updateBookStatusInLibrary(libroExtraterrestre, Book.BookAvailabilityStatus.RESERVED);
         assertEquals(Book.BookAvailabilityStatus.AVAILABLE, libroExtraterrestre.getBookStatus());
     }
 
     @Test
     public void shouldReturnSuccessMessageWhenCheckingOutIfBookIsAvailableInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
         Book libritoQueQuiero = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
-        String receivedMessage = cornerLibrary.checkOutBook(libritoQueQuiero);
+
+        String receivedMessage = librimundi.checkOutBook(libritoQueQuiero);
+
         assertEquals("Thank you! Enjoy the book", receivedMessage);
     }
 
     @Test
     public void shouldReturnErrorMessageWhenCheckingOutIfBookIsNotAvailableInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
 
-        String receivedMessage = cornerLibrary.checkOutBook(libroExtraterrestre);
+        String receivedMessage = librimundi.checkOutBook(libroExtraterrestre);
 
         assertEquals("That book is not available.", receivedMessage);
     }
 
     @Test
     public void shouldReturnErrorMessageWhenCheckingOutIfBookIsNotAvailableButIsInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
         Book libritoQueQuiero = new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
-        String receivedMessage = cornerLibrary.checkOutBook(libritoQueQuiero);
+        String receivedMessage = librimundi.checkOutBook(libritoQueQuiero);
 
         assertEquals("That book is not available.", receivedMessage);
     }
 
     @Test
-    public void shouldReturnBookStatusReservedAfterSuccessfullCheckOut(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+    public void shouldReturnBookStatusReservedAfterSuccessfulCheckOut(){
+        setUp();
         Book libritoQueQuiero = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
 
-        cornerLibrary.checkOutBook(libritoQueQuiero);
+        librimundi.checkOutBook(libritoQueQuiero);
 
-        assertEquals(Book.BookAvailabilityStatus.RESERVED, cornerLibrary.getLibraryBookList()[cornerLibrary.getBookPosition(libritoQueQuiero)].getBookStatus());
+        assertEquals(Book.BookAvailabilityStatus.RESERVED, librimundi.getLibraryBookList().get(librimundi.getBookPosition(libritoQueQuiero)).getBookStatus());
 
     }
 
     @Test
 
     public void shouldReturnSuccessMessageWhenCheckingInIfBookIsAvailableInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
         Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
-        String receivedMessage= cornerLibrary.checkInBook(libroParaDevolver);
+        String receivedMessage= librimundi.checkInBook(libroParaDevolver);
 
         assertEquals("Thank you for returning the book.", receivedMessage);
     }
@@ -105,9 +133,9 @@ public class LibraryTest {
     @Test
 
     public void shouldReturnErrorMessageWhenCheckingInIfBookIsNotAvailableInLibrary(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
 
-        String receivedMessage= cornerLibrary.checkInBook(libroExtraterrestre);
+        String receivedMessage= librimundi.checkInBook(libroExtraterrestre);
 
         assertEquals("That is not a valid book to return.", receivedMessage);
     }
@@ -115,11 +143,22 @@ public class LibraryTest {
     @Test
 
     public void shouldChangeBookStatusIfCheckInWasSuccessfull(){
-        Library cornerLibrary = new Library("Corner", libritosVarios);
+        setUp();
         Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
-        cornerLibrary.checkInBook(libroParaDevolver);
+        librimundi.checkInBook(libroParaDevolver);
 
-        assertEquals(Book.BookAvailabilityStatus.AVAILABLE, cornerLibrary.getLibraryBookList()[cornerLibrary.getBookPosition(libroParaDevolver)].getBookStatus());
+        assertEquals(Book.BookAvailabilityStatus.AVAILABLE, librimundi.getLibraryBookList().get(librimundi.getBookPosition(libroParaDevolver)).getBookStatus());
     }
+    /*
+    @Test
+
+    public void shouldReturnAvailableBooks(){
+        setUp();
+        Book[] libritosDisponibles = new Book[] {libritosVarios[0], libritosVarios[2]};
+
+        Book[] libritosRetornados = librimundi.getAvailableBooks();
+
+        Assert.assertArrayEquals(libritosDisponibles, libritosRetornados);
+    }*/
 }

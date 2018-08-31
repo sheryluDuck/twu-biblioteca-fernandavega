@@ -2,30 +2,30 @@ package com.twu.library;
 
 import com.twu.book.Book;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class Library {
     String libraryName;
-    Book[] libraryBookList;
+    List<Book> libraryBookList;
 
-    public Library(String libraryName, Book[] libraryBookList) {
+    public Library(String libraryName,  List<Book> libraryBookList) {
         this.libraryName = libraryName;
         this.libraryBookList = libraryBookList;
     }
 
 
-    public Book[] getLibraryBookList() {
+    public  List<Book> getLibraryBookList() {
         return libraryBookList;
     }
 
     public boolean isBookFromLibrary(Book book){
-        return Arrays.asList(this.libraryBookList).contains(book);
+        return this.libraryBookList.contains(book);
     }
 
     //should be private(?)
     public int getBookPosition(Book book){
         if(isBookFromLibrary(book)){
-            return Arrays.asList(this.libraryBookList).indexOf(book);
+            return this.libraryBookList.indexOf(book);
         }else{
             return -1;
         }
@@ -34,7 +34,7 @@ public class Library {
     public void updateBookStatusInLibrary(Book book, Book.BookAvailabilityStatus bookStatus){
         int bookPosition = getBookPosition(book);
         if(bookPosition>-1){
-            this.libraryBookList[bookPosition].setBookStatus(bookStatus);
+            this.libraryBookList.get(bookPosition).setBookStatus(bookStatus);
         }
     }
 
@@ -58,5 +58,16 @@ public class Library {
         }
 
     }
+
+    /*public  List<Book> getAvailableBooks(){
+        List<Book> availableBooks;
+        for (Book book:
+             this.getLibraryBookList()) {
+            if(book.getBookStatus()== Book.BookAvailabilityStatus.AVAILABLE){
+
+            }
+        }
+        return availableBooks;
+    }*/
 
 }
