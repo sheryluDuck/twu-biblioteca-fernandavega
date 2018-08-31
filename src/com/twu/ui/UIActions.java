@@ -2,7 +2,6 @@ package com.twu.ui;
 
 import com.twu.book.Book;
 import com.twu.library.Library;
-
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -12,13 +11,20 @@ public class UIActions {
 
     public void printLibraryBooksByStatus(Library library, Book.BookAvailabilityStatus bookStatus){
 
-        System.out.format("|%-2s|%-20s|%-50s|%-5s|%n", "N", "Author", "Book", "Year");
-        int counter = 0;
-        for (Book book:
-                library.getBooksByStatus(bookStatus)) {
-            counter++;
-            System.out.format("|%-2d|%-20s|%-50s|%-5d|%n",counter, book.author, book.bookName, book.publishYear);
+        List<Book> bookList = library.getBooksByStatus(bookStatus);
+
+        if(bookList.isEmpty() || bookList==null){
+            System.out.println("Sorry, there are no books :(");
+        }else{
+            System.out.format("|%-2s|%-20s|%-50s|%-5s|%n", "N", "Author", "Book", "Year");
+            int counter = 0;
+            for (Book book:
+                    library.getBooksByStatus(bookStatus)) {
+                counter++;
+                System.out.format("|%-2d|%-20s|%-50s|%-5d|%n",counter, book.author, book.bookName, book.publishYear);
+            }
         }
+
     }
     private int readNumberFromConsole(String messageToDisplay){
         int selectedBookNumber;
@@ -40,9 +46,13 @@ public class UIActions {
 
     }
 
+    private boolean isListOfBooksNotEmpty(List<Book> bookList){
+        return bookList.size()>0;
+    }
+
     private void printCheckOutBook(Library library){
         try{
-            int selectedNumber= readNumberFromConsole("Please enter a book number: ");
+            int selectedNumber = readNumberFromConsole("Please enter a book number: ");
             Book selectedBook = selectLibraryBook(library.getBooksByStatus(Book.BookAvailabilityStatus.AVAILABLE), selectedNumber);
             String checkInMessage = library.checkOutBook(selectedBook);
             System.out.println(checkInMessage);
@@ -53,15 +63,19 @@ public class UIActions {
     }
 
     private void printCheckInBook(Library library){
-        System.out.println("This is a list of books you can return:");
-        printLibraryBooksByStatus(library, Book.BookAvailabilityStatus.RESERVED);
-        try{
-            int selectedNumber= readNumberFromConsole("Please enter a book number: ");
-            Book selectedBook = selectLibraryBook(library.getBooksByStatus(Book.BookAvailabilityStatus.RESERVED), selectedNumber);
-            String checkInMessage = library.checkInBook(selectedBook);
-            System.out.println(checkInMessage);
-        }catch (InputMismatchException e){
-            System.err.println(e.getMessage());
+        if(isListOfBooksNotEmpty(library.getBooksByStatus(Book.BookAvailabilityStatus.RESERVED))) {
+            System.out.println("This is a list of books you can return:");
+            printLibraryBooksByStatus(library, Book.BookAvailabilityStatus.RESERVED);
+            try{
+                int selectedNumber= readNumberFromConsole("Please enter a book number: ");
+                Book selectedBook = selectLibraryBook(library.getBooksByStatus(Book.BookAvailabilityStatus.RESERVED), selectedNumber);
+                String checkInMessage = library.checkInBook(selectedBook);
+                System.out.println(checkInMessage);
+            }catch (InputMismatchException e){
+                System.err.println(e.getMessage());
+            }
+        }else {
+            printLibraryBooksByStatus(library, Book.BookAvailabilityStatus.RESERVED);
         }
 
     }
@@ -78,7 +92,9 @@ public class UIActions {
             //This could be improved
             switch (selectedOption){
                 case 1:
-                    printCheckOutBook(library);
+                    if(isListOfBooksNotEmpty(library.getBooksByStatus(Book.BookAvailabilityStatus.AVAILABLE))){
+                        printCheckOutBook(library);
+                    }
                     subMenuOptionsForBooks(library);
                     break;
                 case 2:
@@ -101,7 +117,7 @@ public class UIActions {
         System.out.println("Welcome to Biblioteca :)");
         try{
             System.out.println("Please Select an Option");
-            System.out.format("%-2d%-20s%n", 1, "CheckOut a Book");
+            System.out.format("%-2d%-20s%n", 1, "List of available books");
             System.out.format("%-2d%-20s%n", 2, "Exit :(");
             int selectedOption = readNumberFromConsole("Please select an option: ");
             switch (selectedOption){

@@ -62,13 +62,17 @@ public class Library {
 
     public  List<Book> getBooksByStatus(Book.BookAvailabilityStatus bookStatus){
         List<Book> booksByStatus= new ArrayList<>();
-        for (Book book:
-             this.getLibraryBookList()) {
-            if(book.getBookStatus()== bookStatus){
-                booksByStatus.add(book);
+        if( libraryBookList== null){
+            return booksByStatus;
+        }else{
+            for (Book book:
+                    this.getLibraryBookList()) {
+                if(book.getBookStatus()== bookStatus){
+                    booksByStatus.add(book);
+                }
             }
+            return booksByStatus;
         }
-        return booksByStatus;
     }
 
 }

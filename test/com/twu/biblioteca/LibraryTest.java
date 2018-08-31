@@ -3,7 +3,6 @@ package com.twu.biblioteca;
 import com.twu.book.Book;
 import com.twu.library.Library;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
