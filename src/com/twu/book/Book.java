@@ -3,9 +3,9 @@ package com.twu.book;
 import java.util.Objects;
 
 public class Book {
-    String author;
-    String bookName;
-    int publishYear;
+    public String author;
+    public String bookName;
+    public int publishYear;
     public enum BookAvailabilityStatus{
         RESERVED,
         AVAILABLE;
@@ -49,4 +49,12 @@ public class Book {
         return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "author='" + author + '\'' +
+                ", bookName='" + bookName + '\'' +
+                ", publishYear=" + publishYear +
+                '}';
+    }
 }
