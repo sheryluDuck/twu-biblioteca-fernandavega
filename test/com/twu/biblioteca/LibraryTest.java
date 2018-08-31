@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.book.Book;
 import com.twu.library.Library;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,6 @@ public class LibraryTest {
 
     @Before
     public void setUp(){
-        libritosVarios.removeAll(libritosVarios);
         libritosVarios.add(new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE));
         libritosVarios.add(new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED));
         libritosVarios.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
@@ -28,35 +28,62 @@ public class LibraryTest {
 
         libroExtraterrestre = new Book("F. Vega", "What happened in Rosswell?", 2098, Book.BookAvailabilityStatus.AVAILABLE);
         libroDePlaton = libritosVarios.get(0);
+
+    }
+
+    @After
+    public void tearDown(){
+        libritosVarios.removeAll(libritosVarios);
+
     }
 
     @Test
     public void shouldReturnTrueIfBookIsPartOfLibrary(){
-        setUp();
+
 
         assertTrue(librimundi.isBookFromLibrary(libroDePlaton));
+
     }
 
     @Test
     public void shouldReturnFalseIfBookIsNotPartOfLibrary(){
-        setUp();
 
         assertFalse(librimundi.isBookFromLibrary(libroExtraterrestre));
     }
 
     @Test
     public void shouldReturnPositionForBookInLibrary() {
-        setUp();
+
         int platoBookPosition = 0;
 
         int receivedPosition = librimundi.getBookPosition(libroDePlaton);
 
         assertEquals(platoBookPosition, receivedPosition);
     }
+    /*
+    @Test
+    public void shouldReturnPositionOfFirstBookForDuplicatedBooksInLibrary() {
+
+        List<Book> libritosRepetidos = new ArrayList<>();
+        libritosRepetidos.add(new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE));
+        libritosRepetidos.add(new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED));
+        libritosRepetidos.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+        libritosRepetidos.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+        libritosRepetidos.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+
+        Library libreriaConRepetidos = new Library("Repollo", libritosRepetidos);
+
+        int posicionEsperada= 2;
+
+        int receivedPosition= libreriaConRepetidos.getBookPosition(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+
+        assertEquals(posicionEsperada, receivedPosition);
+    }
+    */
 
     @Test
     public void shouldReturnNegativePositionForBookNotInLibrary() {
-        setUp();
+
         int defaultErrorPosition = -1;
 
         int receivedPosition = librimundi.getBookPosition(libroExtraterrestre);
@@ -66,7 +93,7 @@ public class LibraryTest {
 
     @Test
     public void shouldSetBookStatusReservedForBookInLibrary(){
-        setUp();
+
 
         librimundi.updateBookStatusInLibrary(libroDePlaton, Book.BookAvailabilityStatus.RESERVED);
 
@@ -74,14 +101,14 @@ public class LibraryTest {
     }
     @Test
     public void shouldNotChangeStatusForBookNotInLibrary(){
-        setUp();
+
         librimundi.updateBookStatusInLibrary(libroExtraterrestre, Book.BookAvailabilityStatus.RESERVED);
         assertEquals(Book.BookAvailabilityStatus.AVAILABLE, libroExtraterrestre.getBookStatus());
     }
 
     @Test
     public void shouldReturnSuccessMessageWhenCheckingOutIfBookIsAvailableInLibrary(){
-        setUp();
+
         Book libritoQueQuiero = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
 
         String receivedMessage = librimundi.checkOutBook(libritoQueQuiero);
@@ -91,7 +118,7 @@ public class LibraryTest {
 
     @Test
     public void shouldReturnErrorMessageWhenCheckingOutIfBookIsNotAvailableInLibrary(){
-        setUp();
+
 
         String receivedMessage = librimundi.checkOutBook(libroExtraterrestre);
 
@@ -100,7 +127,7 @@ public class LibraryTest {
 
     @Test
     public void shouldReturnErrorMessageWhenCheckingOutIfBookIsNotAvailableButIsInLibrary(){
-        setUp();
+
         Book libritoQueQuiero = new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
         String receivedMessage = librimundi.checkOutBook(libritoQueQuiero);
@@ -110,7 +137,7 @@ public class LibraryTest {
 
     @Test
     public void shouldReturnBookStatusReservedAfterSuccessfulCheckOut(){
-        setUp();
+
         Book libritoQueQuiero = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
 
         librimundi.checkOutBook(libritoQueQuiero);
@@ -122,7 +149,7 @@ public class LibraryTest {
     @Test
 
     public void shouldReturnSuccessMessageWhenCheckingInIfBookIsAvailableInLibrary(){
-        setUp();
+
         Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
         String receivedMessage= librimundi.checkInBook(libroParaDevolver);
@@ -133,7 +160,7 @@ public class LibraryTest {
     @Test
 
     public void shouldReturnErrorMessageWhenCheckingInIfBookIsNotAvailableInLibrary(){
-        setUp();
+
 
         String receivedMessage= librimundi.checkInBook(libroExtraterrestre);
 
@@ -143,22 +170,49 @@ public class LibraryTest {
     @Test
 
     public void shouldChangeBookStatusIfCheckInWasSuccessfull(){
-        setUp();
+
         Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
         librimundi.checkInBook(libroParaDevolver);
 
         assertEquals(Book.BookAvailabilityStatus.AVAILABLE, librimundi.getLibraryBookList().get(librimundi.getBookPosition(libroParaDevolver)).getBookStatus());
     }
-    /*
+
     @Test
 
     public void shouldReturnAvailableBooks(){
-        setUp();
-        Book[] libritosDisponibles = new Book[] {libritosVarios[0], libritosVarios[2]};
 
-        Book[] libritosRetornados = librimundi.getAvailableBooks();
+        List <Book> libritosDisponibles = new ArrayList<>();
+        libritosDisponibles.add(libritosVarios.get(0));
+        libritosDisponibles.add(libritosVarios.get(2));
 
-        Assert.assertArrayEquals(libritosDisponibles, libritosRetornados);
-    }*/
+        List <Book> libritosRetornados = librimundi.getBooksByStatus(Book.BookAvailabilityStatus.AVAILABLE);
+
+        assertEquals(libritosDisponibles, libritosRetornados);
+    }
+
+    @Test
+
+    public void shouldReturnReservedBooks(){
+
+        List <Book> libritosReservados = new ArrayList<>();
+        libritosReservados.add(libritosVarios.get(1));
+
+        List <Book> libritosRetornados = librimundi.getBooksByStatus(Book.BookAvailabilityStatus.RESERVED);
+
+        assertEquals(libritosReservados, libritosRetornados);
+    }
+
+    @Test
+
+    public void shouldReturnEmptyListIfNoAvailableBooks(){
+        List <Book> librosReservados = new ArrayList<>();
+        librosReservados.add(new Book("Lord Byron", "Don Juan", 1973, Book.BookAvailabilityStatus.RESERVED));
+        librosReservados.add(new Book("Anonimo", "Celestina", 1965, Book.BookAvailabilityStatus.RESERVED));
+        Library bibliotecaReservada= new Library("Sunshine", librosReservados);
+
+        List <Book> libritosRetornados = bibliotecaReservada.getBooksByStatus(Book.BookAvailabilityStatus.AVAILABLE);
+
+        assertEquals(new ArrayList<>(), libritosRetornados);
+    }
 }

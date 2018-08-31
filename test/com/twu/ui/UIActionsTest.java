@@ -33,7 +33,7 @@ public class UIActionsTest {
         setUp();
         Book elLibroQueQuiero = new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE);
 
-        Book elLibroQueMeDieron = primeraUI.selectLibraryBook(librimundi, 1);
+        Book elLibroQueMeDieron = primeraUI.selectLibraryBook(librimundi.getLibraryBookList(), 1);
 
         assertEquals(elLibroQueQuiero, elLibroQueMeDieron);
 
@@ -43,7 +43,7 @@ public class UIActionsTest {
     public void shouldThrowExceptionWhenSelectingAnInvalidBook(){
         setUp();
         int outOfArrayBook = 5;
-        primeraUI.selectLibraryBook(librimundi, outOfArrayBook);
+        primeraUI.selectLibraryBook(librimundi.getLibraryBookList(), outOfArrayBook);
 
     }
 

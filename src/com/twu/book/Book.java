@@ -8,13 +8,13 @@ public class Book {
     public int publishYear;
     public enum BookAvailabilityStatus{
         RESERVED,
-        AVAILABLE;
+        AVAILABLE
     }
     private BookAvailabilityStatus bookStatus;
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, bookName, publishYear);
+        return Objects.hash(author, bookName, publishYear, bookStatus);
     }
     @Override
     public boolean equals(Object obj) {
@@ -24,7 +24,7 @@ public class Book {
         }
         Book book = (Book) obj;
         return Objects.equals(author.toLowerCase(), book.author.toLowerCase())&&
-                Objects.equals(bookName.toLowerCase(), bookName.toLowerCase())&&
+                Objects.equals(bookName.toLowerCase(), book.bookName.toLowerCase())&&
                 publishYear == book.publishYear;
 
     }

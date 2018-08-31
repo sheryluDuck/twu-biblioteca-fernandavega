@@ -2,6 +2,7 @@ package com.twu.library;
 
 import com.twu.book.Book;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
@@ -59,15 +60,15 @@ public class Library {
 
     }
 
-    /*public  List<Book> getAvailableBooks(){
-        List<Book> availableBooks;
+    public  List<Book> getBooksByStatus(Book.BookAvailabilityStatus bookStatus){
+        List<Book> booksByStatus= new ArrayList<>();
         for (Book book:
              this.getLibraryBookList()) {
-            if(book.getBookStatus()== Book.BookAvailabilityStatus.AVAILABLE){
-
+            if(book.getBookStatus()== bookStatus){
+                booksByStatus.add(book);
             }
         }
-        return availableBooks;
-    }*/
+        return booksByStatus;
+    }
 
 }
