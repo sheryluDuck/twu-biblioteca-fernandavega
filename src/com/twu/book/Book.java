@@ -23,10 +23,10 @@ public class Book {
             return false;
         }
         Book book = (Book) obj;
-        return Objects.equals(author.toLowerCase(), book.author.toLowerCase())&&
-                Objects.equals(bookName.toLowerCase(), book.bookName.toLowerCase())&&
-                publishYear == book.publishYear;
-
+        return author.toLowerCase().equals(book.author.toLowerCase())&&
+                bookName.toLowerCase().equals(book.bookName.toLowerCase())&&
+                publishYear == book.publishYear &&
+                bookStatus.equals(book.bookStatus);
     }
 
     public Book(String author, String bookName, int publishYear, BookAvailabilityStatus bookStatus) {
@@ -46,7 +46,7 @@ public class Book {
     }
 
     public boolean isBookAvailable(){
-        return this.getBookStatus()==BookAvailabilityStatus.AVAILABLE;
+        return this.getBookStatus().equals(BookAvailabilityStatus.AVAILABLE);
     }
 
     @Override
@@ -55,6 +55,7 @@ public class Book {
                 "author='" + author + '\'' +
                 ", bookName='" + bookName + '\'' +
                 ", publishYear=" + publishYear +
+                ", status=" + bookStatus +
                 '}';
     }
 }

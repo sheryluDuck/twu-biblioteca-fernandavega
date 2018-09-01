@@ -33,7 +33,6 @@ public class LibraryTest {
     @After
     public void tearDown(){
         libritosVarios.removeAll(libritosVarios);
-
     }
 
     @Test
@@ -59,7 +58,6 @@ public class LibraryTest {
 
         assertEquals(platoBookPosition, receivedPosition);
     }
-    /*
     @Test
     public void shouldReturnPositionOfFirstBookForDuplicatedBooksInLibrary() {
 
@@ -78,7 +76,6 @@ public class LibraryTest {
 
         assertEquals(posicionEsperada, receivedPosition);
     }
-    */
 
     @Test
     public void shouldReturnNegativePositionForBookNotInLibrary() {
@@ -140,6 +137,7 @@ public class LibraryTest {
         Book libritoQueQuiero = new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE);
 
         librimundi.checkOutBook(libritoQueQuiero);
+        libritoQueQuiero.setBookStatus(Book.BookAvailabilityStatus.RESERVED);
 
         assertEquals(Book.BookAvailabilityStatus.RESERVED, librimundi.getLibraryBookList().get(librimundi.getBookPosition(libritoQueQuiero)).getBookStatus());
 
@@ -173,6 +171,7 @@ public class LibraryTest {
         Book libroParaDevolver= new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED);
 
         librimundi.checkInBook(libroParaDevolver);
+        libroParaDevolver.setBookStatus(Book.BookAvailabilityStatus.AVAILABLE);
 
         assertEquals(Book.BookAvailabilityStatus.AVAILABLE, librimundi.getLibraryBookList().get(librimundi.getBookPosition(libroParaDevolver)).getBookStatus());
     }
