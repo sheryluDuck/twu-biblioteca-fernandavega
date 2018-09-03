@@ -13,13 +13,13 @@ public class UIActions {
 
         List<Book> bookList = library.getBooksByStatus(bookStatus);
 
-        if(bookList.isEmpty() || bookList==null){
+        if(!isListOfBooksNotEmpty(bookList)){
             System.out.println("Sorry, there are no books :(");
         }else{
             System.out.format("|%-2s|%-20s|%-50s|%-5s|%n", "N", "Author", "Book", "Year");
             int counter = 0;
             for (Book book:
-                    library.getBooksByStatus(bookStatus)) {
+                    bookList) {
                 counter++;
                 System.out.format("|%-2d|%-20s|%-50s|%-5d|%n",counter, book.author, book.bookName, book.publishYear);
             }
