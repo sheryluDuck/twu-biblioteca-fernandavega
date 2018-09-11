@@ -2,7 +2,6 @@ package com.twu.ui;
 
 import com.twu.book.Book;
 import com.twu.library.Library;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,29 +12,29 @@ import java.util.List;
 import static junit.framework.TestCase.*;
 
 public class UIActionsTest {
-    List<Book> libritosVarios = new ArrayList<>();
-    Library librimundi;
+    List<Book> libraryBooks = new ArrayList<>();
+    Library awesomeLibrary;
 
-    UIActions primeraUI;
+    UIActions consoleUI;
 
     @Before
     public void setUp(){
-        primeraUI = new UIActions();
-        libritosVarios.removeAll(libritosVarios);
-        libritosVarios.add(new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE));
-        libritosVarios.add(new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED));
-        libritosVarios.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
-        librimundi= new Library("Librimundi", libritosVarios);
+        consoleUI = new UIActions();
+        libraryBooks.removeAll(libraryBooks);
+        libraryBooks.add(new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE));
+        libraryBooks.add(new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED));
+        libraryBooks.add(new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE));
+        awesomeLibrary = new Library("Awesome Library", libraryBooks);
     }
 
     @Test
     public void shouldReturnBookWhenSelectingAValidBook(){
         setUp();
-        Book elLibroQueQuiero = new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE);
+        Book desiredBook = new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE);
 
-        Book elLibroQueMeDieron = primeraUI.selectLibraryBook(librimundi.getLibraryBookList(), 1);
+        Book returnedBook = consoleUI.selectLibraryBook(awesomeLibrary.getLibraryBookList(), 1);
 
-        assertEquals(elLibroQueQuiero, elLibroQueMeDieron);
+        assertEquals(desiredBook, returnedBook);
 
     }
 
@@ -43,7 +42,7 @@ public class UIActionsTest {
     public void shouldThrowExceptionWhenSelectingAnInvalidBook(){
         setUp();
         int outOfArrayBook = 5;
-        primeraUI.selectLibraryBook(librimundi.getLibraryBookList(), outOfArrayBook);
+        consoleUI.selectLibraryBook(awesomeLibrary.getLibraryBookList(), outOfArrayBook);
 
     }
 
