@@ -1,20 +1,34 @@
 package com.twu.book;
 
+import com.twu.libraryItem.ItemAvailability;
+import com.twu.libraryItem.LibraryItem;
+
 import java.util.Objects;
 
-public class Book {
+public class Book implements LibraryItem {
     public String author;
     public String bookName;
     public int publishYear;
-    public enum BookAvailabilityStatus{
-        RESERVED,
-        AVAILABLE
+    private ItemAvailability bookAvailabilityStatus;
+
+    @Override
+    public ItemAvailability getStatus() {
+        return this.bookAvailabilityStatus;
     }
-    private BookAvailabilityStatus bookStatus;
+
+    @Override
+    public void setStatus(ItemAvailability itemAvailability) {
+        this.bookAvailabilityStatus = itemAvailability;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return this.bookAvailabilityStatus.equals(ItemAvailability.AVAILABLE);
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, bookName, publishYear, bookStatus);
+        return Objects.hash(author, bookName, publishYear, bookAvailabilityStatus);
     }
     @Override
     public boolean equals(Object obj) {
@@ -26,36 +40,14 @@ public class Book {
         return author.toLowerCase().equals(book.author.toLowerCase())&&
                 bookName.toLowerCase().equals(book.bookName.toLowerCase())&&
                 publishYear == book.publishYear &&
-                bookStatus.equals(book.bookStatus);
+                bookAvailabilityStatus.equals(book.bookAvailabilityStatus);
     }
 
-    public Book(String author, String bookName, int publishYear, BookAvailabilityStatus bookStatus) {
+    public Book(String author, String bookName, int publishYear, ItemAvailability itemAvailability) {
         this.author = author;
         this.bookName = bookName;
         this.publishYear = publishYear;
-        this.bookStatus = bookStatus;
+        this.bookAvailabilityStatus = itemAvailability;
     }
 
-    public BookAvailabilityStatus getBookStatus() {
-        return bookStatus;
-    }
-
-
-    public void setBookStatus(BookAvailabilityStatus bookStatus) {
-        this.bookStatus = bookStatus;
-    }
-
-    public boolean isBookAvailable(){
-        return this.getBookStatus().equals(BookAvailabilityStatus.AVAILABLE);
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "author='" + author + '\'' +
-                ", bookName='" + bookName + '\'' +
-                ", publishYear=" + publishYear +
-                ", status=" + bookStatus +
-                '}';
-    }
 }

@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class BibliotecaApp {
 
     public static void main(String[] args) {
+        /*
         Book[] libraryBooks= {
                 new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE),
                 new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED),
@@ -19,7 +20,7 @@ public class BibliotecaApp {
         Library awesomeLibrary = new Library("Awesome Library", Arrays.asList(libraryBooks));
        UIActions printer = new UIActions();
        printer.mainMenu(awesomeLibrary);
-
+       */
 
     }
 }

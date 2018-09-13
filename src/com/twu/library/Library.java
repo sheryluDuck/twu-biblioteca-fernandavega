@@ -1,78 +1,84 @@
 package com.twu.library;
 
 import com.twu.book.Book;
-
-import java.util.ArrayList;
+import com.twu.libraryItem.ItemAvailability;
+import com.twu.libraryItem.LibraryItem;
+import com.twu.movie.Movie;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Library {
     String libraryName;
-    List<Book> libraryBookList;
+    private List<LibraryItem> libraryItems;
 
-    public Library(String libraryName,  List<Book> libraryBookList) {
+
+    public Library(String libraryName, List<LibraryItem> libraryItems) {
         this.libraryName = libraryName;
-        this.libraryBookList = libraryBookList;
+        this.libraryItems = libraryItems;
+    }
+
+    public List<LibraryItem> getBookList() {
+        List<LibraryItem> bookList = libraryItems.stream()
+                .filter(item -> item instanceof Book)
+                .collect(Collectors.toList());
+        return bookList;
+    }
+
+    public List<LibraryItem> getMovieList() {
+        List<LibraryItem> movieList = libraryItems.stream()
+                .filter(item -> item instanceof Movie)
+                .collect(Collectors.toList());
+        return movieList;
+    }
+
+    public boolean isItemFromLibrary(LibraryItem libraryItem){
+      return this.libraryItems.contains(libraryItem);
     }
 
 
-    public  List<Book> getLibraryBookList() {
-        return libraryBookList;
-    }
-
-    public boolean isBookFromLibrary(Book book){
-        return this.libraryBookList.contains(book);
-    }
-
-    //should be private(?)
-    public int getBookPosition(Book book){
-        if(isBookFromLibrary(book)){
-            return this.libraryBookList.indexOf(book);
-        }else{
+    public int getItemPosition(LibraryItem libraryItem){
+        if(isItemFromLibrary(libraryItem)){
+            return this.libraryItems.indexOf(libraryItem);
+        }else {
             return -1;
         }
     }
 
-    public void updateBookStatusInLibrary(Book book, Book.BookAvailabilityStatus bookStatus){
-        int bookPosition = getBookPosition(book);
-        if(bookPosition>-1){
-            this.libraryBookList.get(bookPosition).setBookStatus(bookStatus);
+    //should be private(?)
+
+    public void updateItemStatusInLibrary(LibraryItem libraryItem, ItemAvailability itemAvailability){
+        int itemPosition = this.getItemPosition(libraryItem);
+        if(itemPosition > -1){
+            this.libraryItems.get(itemPosition).setStatus(itemAvailability);
         }
     }
 
-    public String checkOutBook(Book book){
-
-        if(book.isBookAvailable() && isBookFromLibrary(book)){
-            updateBookStatusInLibrary(book, Book.BookAvailabilityStatus.RESERVED);
-            return "Thank you! Enjoy the book";
+    public boolean checkOutItem(LibraryItem libraryItem){
+        if(libraryItem.isAvailable() && isItemFromLibrary(libraryItem)){
+            updateItemStatusInLibrary(libraryItem, ItemAvailability.RESERVED);
+            return true;
         }else {
-            return "That book is not available.";
+            return false;
         }
-
     }
 
-    public String checkInBook(Book book){
-        if(isBookFromLibrary(book)){
-            updateBookStatusInLibrary(book, Book.BookAvailabilityStatus.AVAILABLE);
-            return "Thank you for returning the book.";
+
+    public boolean checkInItem(LibraryItem libraryItem){
+        if(isItemFromLibrary(libraryItem)){
+            updateItemStatusInLibrary(libraryItem, ItemAvailability.AVAILABLE);
+            return true;
         }else {
-            return "That is not a valid book to return.";
+            return false;
         }
 
     }
 
-    public  List<Book> getBooksByStatus(Book.BookAvailabilityStatus bookStatus){
-        List<Book> booksByStatus= new ArrayList<>();
-        if( libraryBookList== null){
-            return booksByStatus;
-        }else{
-            for (Book book:
-                    this.getLibraryBookList()) {
-                if(book.getBookStatus()== bookStatus){
-                    booksByStatus.add(book);
-                }
-            }
-            return booksByStatus;
-        }
+    public List<LibraryItem> getItemsByStatus(List<LibraryItem> libraryItems, ItemAvailability itemAvailability){
+        List<LibraryItem> filteredList = libraryItems.stream()
+                .filter(item -> item.getStatus().equals(itemAvailability))
+                .collect(Collectors.toList());
+        return filteredList;
     }
+
 
 }
