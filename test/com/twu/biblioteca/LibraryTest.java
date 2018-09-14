@@ -5,12 +5,12 @@ import com.twu.library.Library;
 import com.twu.libraryItem.ItemAvailability;
 import com.twu.libraryItem.LibraryItem;
 import com.twu.movie.Movie;
+import com.twu.user.User;
+import com.twu.user.UserType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static junit.framework.TestCase.*;
 
@@ -23,6 +23,9 @@ public class LibraryTest {
     Movie christineMovie;
     ArrayList repeatedItems;
     Library repeatedLibrary;
+    Map<User, List<LibraryItem>> awesomeRecordBook;
+    Map<User, List<LibraryItem>> repeatedRecordBook;
+    List<User> libraryUsers;
 
     @Before
     public void setUp() {
@@ -34,7 +37,22 @@ public class LibraryTest {
                 new Movie("Scream", "Wes Craven", 1996, 7, ItemAvailability.AVAILABLE)
         ));
 
-        awesomeLibrary = new Library("Librimundi", libraryItems);
+        libraryUsers = new ArrayList<>(Arrays.asList(
+                new User("Smithy", "sm@t.com", "Middle of nowhere", "73734435", "123-4567", "test123", UserType.CUSTOMER),
+                new User("John Smith", "js@t.com", "Fake St", "634767436", "123-8910", "test456", UserType.CUSTOMER),
+                new User("Jane Doe", "jd@t.com", "Papaya St", "859485488", "123-1112", "test789", UserType.CUSTOMER)
+                ));
+
+        awesomeRecordBook = new HashMap<>();
+        awesomeRecordBook.put(libraryUsers.get(0), new ArrayList<>(Arrays.asList(
+                new Book("Michel Foucault", "The Order of Things", 1966, ItemAvailability.RESERVED),
+                new Movie("Back to the future I", "Steven Spielberg", 1985, 10, ItemAvailability.AVAILABLE)
+        )));
+        awesomeRecordBook.put(libraryUsers.get(1), new ArrayList<>(Arrays.asList(
+                new Movie("Scream", "Wes Craven", 1996, 7, ItemAvailability.AVAILABLE)
+        )));
+
+        awesomeLibrary = new Library("Librimundi", libraryItems, awesomeRecordBook);
 
         alienBook = new Book("F. Vega", "What happened in Roswell?", 2098, ItemAvailability.AVAILABLE);
 
@@ -54,7 +72,13 @@ public class LibraryTest {
                 new Movie("Saturday Night Fever", "John Badham", 1977, 9, ItemAvailability.RESERVED)
         ));
 
-        repeatedLibrary = new Library("Repeated Library", repeatedItems);
+        repeatedRecordBook = new HashMap<>();
+        repeatedRecordBook.put(libraryUsers.get(1), new ArrayList<>(Arrays.asList(
+                new Book("Camilo Jose Cela", "Colmena", 1950, ItemAvailability.AVAILABLE),
+                new Movie("Saturday Night Fever", "John Badham", 1977, 9, ItemAvailability.RESERVED)
+        )));
+
+        repeatedLibrary = new Library("Repeated Library", repeatedItems, repeatedRecordBook);
     }
 
 
@@ -259,4 +283,27 @@ public class LibraryTest {
 
         assertEquals(borrowedMovies, returnedBooks);
     }
+
+    @Test
+    public void shouldAddBookToUserThatAlreadyExistsInRegistry(){
+        List<LibraryItem> booksCheckedOutByUser = awesomeRecordBook.get(libraryUsers.get(0));
+        booksCheckedOutByUser.add((LibraryItem) libraryItems.get(5));
+
+        awesomeLibrary.registerCheckOut(libraryUsers.get(0), new Movie("Scream", "Wes Craven", 1996, 7, ItemAvailability.AVAILABLE));
+        List<LibraryItem> returnedBooksForUser = awesomeLibrary.getLibraryRegistryBook().get(libraryUsers.get(0));
+
+        assertEquals(booksCheckedOutByUser, returnedBooksForUser);
+    }
+
+    @Test
+    public void shouldAddNewRegistryToLibraryRecordForUserNotInRecord(){
+        List<LibraryItem> booksCheckedOutByUser = new ArrayList<>();
+        booksCheckedOutByUser.add((LibraryItem) libraryItems.get(2));
+
+        awesomeLibrary.registerCheckOut(libraryUsers.get(2), new Book("Camilo Jose Cela", "Colmena", 1950, ItemAvailability.AVAILABLE));
+        List<LibraryItem> returnedBooksForUser = awesomeLibrary.getLibraryRegistryBook().get(libraryUsers.get(2));
+
+        assertEquals(booksCheckedOutByUser, returnedBooksForUser);
+    }
+
 }

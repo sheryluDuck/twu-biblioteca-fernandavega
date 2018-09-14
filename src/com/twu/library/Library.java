@@ -4,18 +4,26 @@ import com.twu.book.Book;
 import com.twu.libraryItem.ItemAvailability;
 import com.twu.libraryItem.LibraryItem;
 import com.twu.movie.Movie;
+import com.twu.user.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Library {
-    String libraryName;
+    private String libraryName;
     private List<LibraryItem> libraryItems;
+    private Map <User, List<LibraryItem>> registryBook;
 
-
-    public Library(String libraryName, List<LibraryItem> libraryItems) {
+    public Library(String libraryName, List<LibraryItem> libraryItems, Map<User, List<LibraryItem>> registryBook) {
         this.libraryName = libraryName;
         this.libraryItems = libraryItems;
+        this.registryBook = registryBook;
     }
+
+    //We can have a general method that receives a class as an argument
 
     public List<LibraryItem> getBookList() {
         List<LibraryItem> bookList = libraryItems.stream()
@@ -78,6 +86,28 @@ public class Library {
                 .filter(item -> item.getStatus().equals(itemAvailability))
                 .collect(Collectors.toList());
         return filteredList;
+    }
+
+    private boolean isUserInRegistryBook(User regularUser){
+        return registryBook.containsKey(regularUser);
+    }
+
+
+    public void registerCheckOut(User regularUser, LibraryItem libraryItem){
+
+        List<LibraryItem> userCheckedOutItems;
+
+        if(isUserInRegistryBook(regularUser)){
+            userCheckedOutItems = registryBook.get(regularUser);
+            userCheckedOutItems.add(libraryItem);
+        } else{
+            userCheckedOutItems = new ArrayList<>(Arrays.asList(libraryItem));
+        }
+        registryBook.put(regularUser, userCheckedOutItems);
+    }
+
+    public Map<User, List<LibraryItem>> getLibraryRegistryBook(){
+        return this.registryBook;
     }
 
 
