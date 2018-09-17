@@ -25,4 +25,12 @@ public class Utils {
             UIActions.print(String.format("|%-2d %-1s", counter, item.toString()));
         }
     }
+
+    public static int castNumberFromConsole(String rawNumber){
+        try {
+            return Integer.parseInt(rawNumber);
+        } catch (NumberFormatException e) {
+            throw new InputMismatchException("This is not a number :(");
+        }
+    }
 }

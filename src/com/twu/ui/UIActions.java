@@ -2,7 +2,6 @@ package com.twu.ui;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UIActions {
@@ -17,14 +16,6 @@ public class UIActions {
 
         String inputString = scanner.nextLine();
         return inputString;
-    }
-
-    public int castNumberFromConsole(String rawNumber){
-        try {
-            return Integer.parseInt(rawNumber);
-        } catch (NumberFormatException e) {
-            throw new InputMismatchException("This is not a number :(");
-        }
     }
 
     public static void print(String string){

@@ -32,7 +32,7 @@ public class CheckOutItemAction implements Action {
             try{
                 uiActions.print("Please select an item number: ");
                 String selectedNumberRaw = uiActions.readUserInputFromConsole();
-                int selectedNumber = uiActions.castNumberFromConsole(selectedNumberRaw);
+                int selectedNumber = Utils.castNumberFromConsole(selectedNumberRaw);
                 LibraryItem selectedItem = Utils.getLibraryItemFromList(libraryItems, selectedNumber);
                 boolean isSuccessfulCheckOut = library.checkOutItem(selectedItem);
                 if (isSuccessfulCheckOut){

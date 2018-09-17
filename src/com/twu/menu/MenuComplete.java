@@ -37,7 +37,7 @@ public class MenuComplete {
 
             selectedOption = uiActions.readUserInputFromConsole();
             try {
-                int selectedNumber = uiActions.castNumberFromConsole(selectedOption);
+                int selectedNumber = Utils.castNumberFromConsole(selectedOption);
                 Action action = actions.get(selectedNumber);
                 action.run();
 
