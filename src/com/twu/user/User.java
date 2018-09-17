@@ -26,11 +26,25 @@ public class User {
         return userType;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public String getPassword(){
         return this.password;
     }
 
     public String getLibraryNumber(){
         return this.libraryNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

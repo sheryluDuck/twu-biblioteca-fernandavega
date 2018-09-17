@@ -27,6 +27,11 @@ public class Book implements LibraryItem {
     }
 
     @Override
+    public String getName() {
+        return this.bookName;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(author, bookName, publishYear, bookAvailabilityStatus);
     }
@@ -41,6 +46,11 @@ public class Book implements LibraryItem {
                 bookName.toLowerCase().equals(book.bookName.toLowerCase())&&
                 publishYear == book.publishYear &&
                 bookAvailabilityStatus.equals(book.bookAvailabilityStatus);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("|%-20s|%-50s|%-5d|%n", this.author, this.bookName, this.publishYear);
     }
 
     public Book(String author, String bookName, int publishYear, ItemAvailability itemAvailability) {

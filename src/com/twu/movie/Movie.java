@@ -52,5 +52,14 @@ public class Movie implements LibraryItem {
         return this.movieAvailabilityStatus.equals(ItemAvailability.AVAILABLE);
     }
 
+    @Override
+    public String getName() {
+        return this.title;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%-20s|%-50s|%-5d|%-3d|%n", this.director, this.title, this.year, this.rating);
+    }
 
 }
