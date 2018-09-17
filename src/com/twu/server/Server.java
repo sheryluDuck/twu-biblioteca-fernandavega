@@ -7,6 +7,7 @@ import com.twu.movie.Movie;
 import com.twu.operations.Middleware;
 import com.twu.ui.UIActions;
 import com.twu.user.User;
+import com.twu.user.UserType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,9 +41,10 @@ public class Server {
                 new SubmenuMovies(new MenuComplete(uiActions), library, uiActions, user)));
         options.add(new MenuItem(5, "User Information",
                 new MsgAction(user.toString(), uiActions)));
-        options.add(new MenuItem(6, "Library Record",
-                new PrintLibraryRecordAction(library)));
-
+        if(user.getUserType()==UserType.LIBRARIAN){
+            options.add(new MenuItem(6, "Library Record",
+                    new PrintLibraryRecordAction(library)));
+        }
         menu.newMenu("Main Menu", options);
     }
 
