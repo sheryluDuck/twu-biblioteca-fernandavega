@@ -53,13 +53,13 @@ public class Movie implements LibraryItem {
     }
 
     @Override
-    public String getName() {
+    public String getItemName() {
         return this.title;
     }
 
     @Override
     public String toString() {
-        return String.format("%-20s|%-50s|%-5d|%-3d|%n", this.director, this.title, this.year, this.rating);
+        return String.format("|%-20s|%-50s|%-5d|%-3d|", this.director, this.title, this.year, this.rating);
     }
 
 }

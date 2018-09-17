@@ -1,5 +1,7 @@
 package com.twu.user;
 
+import java.util.Objects;
+
 public class User {
 
     private String name;
@@ -30,8 +32,9 @@ public class User {
         return this.name;
     }
 
-    public String getPassword(){
-        return this.password;
+
+    public boolean isValidPassword(String libraryNumber, String password){
+        return Objects.hash(this.libraryNumber, this.password) == Objects.hash(libraryNumber, password);
     }
 
     public String getLibraryNumber(){
@@ -40,11 +43,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return "Name: " + name + '\n' +
+                "Email: " + email + '\n' +
+                "Address: " + address + '\n' +
+                "Phone Number: " + phoneNumber + '\n';
     }
 }

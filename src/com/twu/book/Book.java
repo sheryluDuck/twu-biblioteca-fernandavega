@@ -27,7 +27,7 @@ public class Book implements LibraryItem {
     }
 
     @Override
-    public String getName() {
+    public String getItemName() {
         return this.bookName;
     }
 
@@ -50,7 +50,7 @@ public class Book implements LibraryItem {
 
     @Override
     public String toString() {
-        return String.format("|%-20s|%-50s|%-5d|%n", this.author, this.bookName, this.publishYear);
+        return String.format("|%-20s|%-50s|%-5d|", this.author, this.bookName, this.publishYear);
     }
 
     public Book(String author, String bookName, int publishYear, ItemAvailability itemAvailability) {

@@ -1,6 +1,7 @@
 package com.twu.menu;
 
 import com.twu.library.Library;
+import com.twu.libraryItem.ItemAvailability;
 import com.twu.libraryItem.LibraryItem;
 import com.twu.ui.UIActions;
 
@@ -9,21 +10,25 @@ import java.util.List;
 
 public class CheckOutItemAction implements Action {
     private Library library;
-    private List<LibraryItem> libraryItems;
     private UIActions uiActions;
+    private Class itemsClass;
+    private String header;
 
-    public CheckOutItemAction(Library library, List<LibraryItem> libraryItemList, UIActions uiActions) {
+    public CheckOutItemAction(Library library, UIActions uiActions, Class itemsClass, String header) {
         this.library = library;
-        this.libraryItems = libraryItemList;
         this.uiActions = uiActions;
+        this.itemsClass = itemsClass;
+        this.header = header;
     }
 
     @Override
     public void run() {
         uiActions.printSpace();
-        if(libraryItems.size()<0){
+        List<LibraryItem> libraryItems = library.getItemsByStatus(library.getItemList(itemsClass), ItemAvailability.AVAILABLE);
+        if(libraryItems.size()<=0){
             uiActions.print("There are no items to checkOut");
         }else {
+            Utils.printListOfItems(libraryItems, header);
             try{
                 uiActions.print("Please select an item number: ");
                 String selectedNumberRaw = uiActions.readUserInputFromConsole();

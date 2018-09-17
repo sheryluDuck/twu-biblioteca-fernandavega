@@ -1,34 +1,37 @@
 package com.twu.menu;
 
 import com.twu.library.Library;
+import com.twu.libraryItem.ItemAvailability;
 import com.twu.libraryItem.LibraryItem;
 import com.twu.ui.UIActions;
 import com.twu.user.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.InputMismatchException;
 import java.util.List;
 
 public class CheckInItemAction implements Action{
     private Library library;
     private UIActions uiActions;
-    private List<LibraryItem> libraryItems;
     private User user;
+    private Class itemsClass;
+    private String header;
 
-    public CheckInItemAction(Library library, UIActions uiActions, List<LibraryItem> libraryItems, User user) {
+    public CheckInItemAction(Library library, UIActions uiActions, User user, Class itemsClass, String  header) {
         this.library = library;
         this.uiActions = uiActions;
-        this.libraryItems = libraryItems;
         this.user = user;
+        this.itemsClass = itemsClass;
+        this.header = header;
     }
 
     @Override
     public void run() {
         uiActions.printSpace();
-        if(libraryItems.size()<0){
+        List<LibraryItem> libraryItems = library.getItemsByStatus(library.getItemList(itemsClass), ItemAvailability.RESERVED);
+        if(libraryItems.size()<=0){
             uiActions.print("There are no items to checkIn");
         }else {
-            libraryItems.stream().map(LibraryItem::toString).forEach(UIActions::print);
+            Utils.printListOfItems(libraryItems, header);
             try{
                 uiActions.print("Please select an item number: ");
                 String selectedNumberRaw = uiActions.readUserInputFromConsole();

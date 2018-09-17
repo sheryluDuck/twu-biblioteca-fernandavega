@@ -1,6 +1,7 @@
 package com.twu.operations;
 
 import com.twu.server.Server;
+import com.twu.ui.UIActions;
 import com.twu.user.User;
 import com.twu.user.UserType;
 
@@ -15,10 +16,10 @@ public class RoleCheckMiddleware extends Middleware {
     public boolean check(String libraryNumber, String password) {
         User user = server.getUserByLibraryNumber(libraryNumber);
         if (user.getUserType().equals(UserType.LIBRARIAN)) {
-            System.out.println("Hello, librarian!");
+            UIActions.print("Hello, librarian!");
             return true;
         }
-        System.out.println("Hello, user!");
+        UIActions.print("Hello, user!");
         return checkNext(libraryNumber, password);
     }
 }

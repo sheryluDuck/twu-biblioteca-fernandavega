@@ -8,6 +8,6 @@ public interface LibraryItem {
 
     boolean isAvailable();
 
-    String getName();
+    String getItemName();
 
 }

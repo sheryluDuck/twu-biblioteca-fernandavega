@@ -1,5 +1,6 @@
 package com.twu.menu;
 
+import com.twu.book.Book;
 import com.twu.library.Library;
 import com.twu.libraryItem.ItemAvailability;
 import com.twu.ui.UIActions;
@@ -25,9 +26,9 @@ public class SubmenuBooks implements Action {
     public void run() {
         List<MenuItem> options = new ArrayList<>();
         options.add(new MenuItem(1, "CheckOut a Book",
-                new CheckOutItemAction(library, library.getItemsByStatus(library.getBookList(), ItemAvailability.AVAILABLE), uiActions )));
+                new CheckOutItemAction(library, uiActions, Book.class, String.format("|%-3s|%-20s|%-50s|%-5s|", "N", "Author", "Book", "Year"))));
         options.add(new MenuItem(2,"CheckIn a Book",
-                new CheckInItemAction(library, uiActions, library.getItemsByStatus(library.getBookList(), ItemAvailability.RESERVED), user)));
+                new CheckInItemAction(library, uiActions, user, Book.class, String.format("|%-3s|%-20s|%-50s|%-5s|", "N", "Author", "Book", "Year"))));
         menu.newMenu("Book Options: ", options);
     }
 

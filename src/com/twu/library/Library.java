@@ -1,9 +1,7 @@
 package com.twu.library;
 
-import com.twu.book.Book;
 import com.twu.libraryItem.ItemAvailability;
 import com.twu.libraryItem.LibraryItem;
-import com.twu.movie.Movie;
 import com.twu.user.User;
 
 import java.util.ArrayList;
@@ -23,20 +21,11 @@ public class Library {
         this.registryBook = registryBook;
     }
 
-    //We can have a general method that receives a class as an argument
-
-    public List<LibraryItem> getBookList() {
+    public List<LibraryItem> getItemList(Class itemClass) {
         List<LibraryItem> bookList = libraryItems.stream()
-                .filter(item -> item instanceof Book)
+                .filter(item -> itemClass.isInstance(item))
                 .collect(Collectors.toList());
         return bookList;
-    }
-
-    public List<LibraryItem> getMovieList() {
-        List<LibraryItem> movieList = libraryItems.stream()
-                .filter(item -> item instanceof Movie)
-                .collect(Collectors.toList());
-        return movieList;
     }
 
     public boolean isItemFromLibrary(LibraryItem libraryItem){

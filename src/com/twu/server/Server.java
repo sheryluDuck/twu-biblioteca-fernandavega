@@ -2,17 +2,11 @@ package com.twu.server;
 
 import com.twu.book.Book;
 import com.twu.library.Library;
-import com.twu.libraryItem.ItemAvailability;
-import com.twu.libraryItem.LibraryItem;
-import com.twu.menu.ListItemsAction;
-import com.twu.menu.MenuComplete;
-import com.twu.menu.MenuItem;
-import com.twu.menu.MsgAction;
+import com.twu.menu.*;
 import com.twu.movie.Movie;
 import com.twu.operations.Middleware;
 import com.twu.ui.UIActions;
 import com.twu.user.User;
-import com.twu.user.UserType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,18 +31,24 @@ public class Server {
 
         List<MenuItem> options = new ArrayList<>();
         options.add(new MenuItem(1, "List Available Books",
-                new ListItemsAction(library.getItemsByStatus(library.getBookList(), ItemAvailability.AVAILABLE), uiActions)));
+                new ListItemsAction(uiActions, library, Book.class, String.format("|%-3s|%-20s|%-50s|%-5s|", "N", "Author", "Book", "Year"))));
         options.add(new MenuItem(2, "List Available Movies",
-                new ListItemsAction(library.getItemsByStatus(library.getMovieList(), ItemAvailability.AVAILABLE), uiActions)));
-        options.add(new MenuItem(3, "User Information",
+                new ListItemsAction(uiActions, library, Movie.class, String.format("|%-3s|%-20s|%-50s|%-5s|%-3s|", "N", "Director", "Movie", "Year", "Rating"))));
+        options.add(new MenuItem(3, "CheckIn/Out a Book",
+                new SubmenuBooks(new MenuComplete(uiActions), library, uiActions, user)));
+        options.add(new MenuItem(4, "CheckIn/Out a Movie",
+                new SubmenuMovies(new MenuComplete(uiActions), library, uiActions, user)));
+        options.add(new MenuItem(5, "User Information",
                 new MsgAction(user.toString(), uiActions)));
+        options.add(new MenuItem(6, "Library Record",
+                new PrintLibraryRecordAction(library)));
 
         menu.newMenu("Main Menu", options);
     }
 
     public boolean logIn(String libraryNumber, String password) {
         if (middleware.check(libraryNumber, password)) {
-            System.out.println("Authorization have been successful!");
+            System.out.println("Authorization has been successful!");
             User loggedInUser = getUserByLibraryNumber(libraryNumber);
             createMenu(loggedInUser);
 
@@ -75,6 +75,6 @@ public class Server {
 
     public boolean isValidPassword(String libraryNumber, String password) {
         User user = getUserByLibraryNumber(libraryNumber);
-        return user.getPassword().equals(password);
+        return user.isValidPassword(libraryNumber, password);
     }
 }

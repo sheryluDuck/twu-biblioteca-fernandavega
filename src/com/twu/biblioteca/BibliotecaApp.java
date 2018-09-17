@@ -9,6 +9,7 @@ import com.twu.movie.Movie;
 import com.twu.operations.Middleware;
 import com.twu.operations.RoleCheckMiddleware;
 import com.twu.operations.UserExistsMiddleware;
+import com.twu.operations.UserPasswordCheckMiddleware;
 import com.twu.server.Server;
 import com.twu.ui.UIActions;
 import com.twu.user.User;
@@ -17,16 +18,16 @@ import com.twu.user.UserType;
 import java.io.*;
 import java.util.*;
 
-import static sun.java2d.cmm.ColorTransform.In;
 
 public class BibliotecaApp {
 
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Server server;
+    private static InputStream inputStream = System.in;
+    private static UIActions uiActions = new UIActions(inputStream, new PrintStream(System.out));
 
 
     private static void init() {
-        UIActions uiActions = new UIActions(new Scanner(System.in), new PrintStream(System.out));
+
         List<LibraryItem> libraryItems = new ArrayList<LibraryItem>(Arrays.asList(new Book("Plato", "Republic", 1984, ItemAvailability.AVAILABLE),
                 new Book("Michel Foucault", "The Order of Things", 1966, ItemAvailability.RESERVED),
                 new Book("Camilo Jose Cela", "Colmena", 1950, ItemAvailability.AVAILABLE),
@@ -54,38 +55,22 @@ public class BibliotecaApp {
         server.register(new User("John Smith", "js@t.com", "Fake St", "634767436", "123-8910", "test456", UserType.LIBRARIAN));
 
         Middleware middleware = new UserExistsMiddleware(server);
-        middleware.linkWith(new RoleCheckMiddleware(server));
+        middleware.linkWith(new UserPasswordCheckMiddleware(server))
+                .linkWith(new RoleCheckMiddleware(server));
 
         server.setMiddleware(middleware);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         init();
 
-        boolean success;
+       boolean success;
         do {
-            System.out.print("Enter your library number: ");
-            String libraryNumber = reader.readLine();
-            System.out.print("Input password: ");
-            String password = reader.readLine();
+            UIActions.print("Enter your library number: ");
+            String libraryNumber = uiActions.readUserInputFromConsole();
+            UIActions.print("Input password: ");
+            String password = uiActions.readUserInputFromConsole();
             success = server.logIn(libraryNumber, password);
         } while (!success);
     }
-
-
-
-    /*public static void main(String[] args) {
-
-        Book[] libraryBooks= {
-                new Book("Plato", "Republic", 1984, Book.BookAvailabilityStatus.AVAILABLE),
-                new Book("Michel Foucault", "The Order of Things", 1966, Book.BookAvailabilityStatus.RESERVED),
-                new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE),
-                new Book("Camilo Jose Cela", "Colmena", 1950, Book.BookAvailabilityStatus.AVAILABLE)
-        };
-        Library awesomeLibrary = new Library("Awesome Library", Arrays.asList(libraryBooks));
-       UIActions printer = new UIActions();
-       printer.mainMenu(awesomeLibrary);
-
-
-    }*/
 }

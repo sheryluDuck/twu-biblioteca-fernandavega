@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.*;
 
@@ -161,7 +162,7 @@ public class LibraryTest {
 
         awesomeLibrary.updateItemStatusInLibrary(platoBook, ItemAvailability.RESERVED);
 
-        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getBookList().get(0).getStatus());
+        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getItemList(Book.class).get(0).getStatus());
     }
 
     @Test
@@ -169,7 +170,7 @@ public class LibraryTest {
 
         awesomeLibrary.updateItemStatusInLibrary(backToTheFutureMovie, ItemAvailability.RESERVED);
 
-        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getMovieList().get(0).getStatus());
+        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getItemList(Movie.class).get(0).getStatus());
     }
 
     @Test
@@ -209,7 +210,7 @@ public class LibraryTest {
         awesomeLibrary.checkOutItem(desiredMovie);
         desiredMovie.setStatus(ItemAvailability.RESERVED);
 
-        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getMovieList().get(2).getStatus());
+        assertEquals(ItemAvailability.RESERVED, awesomeLibrary.getItemList(Movie.class).get(2).getStatus());
 
     }
 
@@ -235,7 +236,7 @@ public class LibraryTest {
         awesomeLibrary.checkInItem(desiredMovie);
         desiredMovie.setStatus(ItemAvailability.AVAILABLE);
 
-        assertEquals(ItemAvailability.AVAILABLE, awesomeLibrary.getMovieList().get(1).getStatus());
+        assertEquals(ItemAvailability.AVAILABLE, awesomeLibrary.getItemList(Movie.class).get(1).getStatus());
     }
 
     @Test
@@ -245,7 +246,7 @@ public class LibraryTest {
         availableBooks.add(libraryItems.get(0));
         availableBooks.add(libraryItems.get(2));
 
-        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getBookList(), ItemAvailability.AVAILABLE);
+        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getItemList(Book.class), ItemAvailability.AVAILABLE);
 
         assertEquals(availableBooks, returnedBooks);
     }
@@ -257,7 +258,7 @@ public class LibraryTest {
         availableMovies.add(libraryItems.get(3));
         availableMovies.add(libraryItems.get(5));
 
-        List<LibraryItem> returnedMovies = awesomeLibrary.getItemsByStatus(awesomeLibrary.getMovieList(), ItemAvailability.AVAILABLE);
+        List<LibraryItem> returnedMovies = awesomeLibrary.getItemsByStatus(awesomeLibrary.getItemList(Movie.class), ItemAvailability.AVAILABLE);
 
         assertEquals(availableMovies, returnedMovies);
     }
@@ -268,7 +269,7 @@ public class LibraryTest {
         List<Object> borrowedBooks = new ArrayList<>();
         borrowedBooks.add(libraryItems.get(1));
 
-        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getBookList(), ItemAvailability.RESERVED);
+        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getItemList(Book.class), ItemAvailability.RESERVED);
 
         assertEquals(borrowedBooks, returnedBooks);
     }
@@ -279,7 +280,7 @@ public class LibraryTest {
         List<Object> borrowedMovies = new ArrayList<>();
         borrowedMovies.add(libraryItems.get(4));
 
-        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getMovieList(), ItemAvailability.RESERVED);
+        List<LibraryItem> returnedBooks = awesomeLibrary.getItemsByStatus(awesomeLibrary.getItemList(Movie.class), ItemAvailability.RESERVED);
 
         assertEquals(borrowedMovies, returnedBooks);
     }

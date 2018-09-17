@@ -12,6 +12,7 @@ public class MenuComplete {
         this.uiActions = uiActions;
     }
 
+
     public void newMenu(String title, List<MenuItem> items) {
         Map<Integer, Action> actions = new HashMap<>();
         List<Integer> options = new ArrayList<>();
@@ -25,6 +26,7 @@ public class MenuComplete {
             options.add(item.getOption());
             actions.put(item.getOption(), item.getAction());
         }
+        items.add(quit);
         options.add(quit.getOption());
         actions.put(quit.getOption(), quit.getAction());
 
@@ -32,18 +34,18 @@ public class MenuComplete {
             for (MenuItem item : items) {
                 uiActions.print(item.toString());
             }
-            do {
-                selectedOption = uiActions.readUserInputFromConsole();
-                try {
-                    int selectedNumber = uiActions.castNumberFromConsole(selectedOption);
-                    Action action = actions.get(selectedNumber);
-                    action.run();
-                }catch(InputMismatchException e){
-                    e.getMessage();
-                }
-            } while (!selectedOption.equals("0"));
 
-        } while(!selectedOption.equals("0"));
+            selectedOption = uiActions.readUserInputFromConsole();
+            try {
+                int selectedNumber = uiActions.castNumberFromConsole(selectedOption);
+                Action action = actions.get(selectedNumber);
+                action.run();
+
+            } catch (InputMismatchException | NullPointerException e) {
+                uiActions.print("Sorry, this is not a valid option");
+            }
+
+        } while (!selectedOption.equals("0"));
 
     }
 }

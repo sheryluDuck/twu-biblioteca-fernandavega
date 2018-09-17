@@ -9,8 +9,8 @@ public class UIActions {
     private final Scanner scanner;
     private static PrintStream printStream;
 
-    public UIActions(Scanner scanner, PrintStream printStream) {
-        this.scanner = scanner;
+    public UIActions(InputStream inputStream, PrintStream printStream) {
+        this.scanner = new Scanner(inputStream);
         this.printStream = printStream;
     }
     public String readUserInputFromConsole(){
@@ -35,3 +35,4 @@ public class UIActions {
         printStream.println();
     }
 }
+
