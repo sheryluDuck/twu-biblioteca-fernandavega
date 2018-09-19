@@ -60,5 +60,6 @@ public class ServerTest {
     public void shouldReturnFalseForInvalidPasswordForUserInServer(){
         assertFalse(server.isValidPassword(userInServer.getLibraryNumber(), "thisIsNotThePassword"));
     }
+
     
 }

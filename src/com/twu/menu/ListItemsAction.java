@@ -24,7 +24,7 @@ public class ListItemsAction implements Action{
     public void run() {
         uiActions.printSpace();
         List<LibraryItem> libraryItems = library.getItemsByStatus(library.getItemList(itemsClass), ItemAvailability.AVAILABLE);
-        if(libraryItems.size()<0){
+        if(libraryItems.size()==0){
            uiActions.print("Sorry, there are no items available :(");
         }else {
             Utils.printListOfItems(libraryItems, header);

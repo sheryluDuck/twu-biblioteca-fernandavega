@@ -16,10 +16,10 @@ public class RoleCheckMiddleware extends Middleware {
     public boolean check(String libraryNumber, String password) {
         User user = server.getUserByLibraryNumber(libraryNumber);
         if (user.getUserType().equals(UserType.LIBRARIAN)) {
-            UIActions.print("Hello, librarian!");
+            System.out.println("Hello, librarian!");
             return true;
         }
-        UIActions.print("Hello, user!");
+        System.out.println("Hello, user!");
         return checkNext(libraryNumber, password);
     }
 }
